@@ -44,6 +44,7 @@
             <thead>
               <tr>
                 <th scope="col">Title</th>
+                <th scope="col">Type</th>
                 <th scope="col">Actions</th>
               </tr>
             </thead>
@@ -58,6 +59,10 @@
                         <input type="text" value="{{ $project->title }}" name="title">
 
                     </form>
+                  </td>
+
+                  <td>
+                    {{ $project->type->title }}
                   </td>
 
                   <td class="d-flex">
