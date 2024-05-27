@@ -15,8 +15,22 @@ class ProjecstController extends Controller
      */
     public function index()
     {
-        $projects = Project::all();
-        return view('admin.projects.index', compact('projects'));
+        if(isset($_GET['toSearch'])){
+            $projects = Project::where('title', 'like', '%'. $_GET['toSearch'] . '%')->get();
+        }else{
+            $projects = Project::all();
+        }
+
+        $direction = 'desc';
+
+        return view('admin.projects.index', compact('projects', 'direction'));
+    }
+
+    public function orderby($direction, $column){
+        $direction = $direction === 'desc' ? 'asc' : 'desc';
+
+        $projects = Project::orderBy($column, $direction)->get();
+        return view('admin.projects.index', compact('projects', 'direction'));
     }
 
     /**
@@ -24,7 +38,7 @@ class ProjecstController extends Controller
      */
     public function create()
     {
-        //
+        return view('admin.projects.create');
     }
 
     /**
@@ -32,6 +46,15 @@ class ProjecstController extends Controller
      */
     public function store(Request $request)
     {
+        $exists = $request->validate([
+            'title' => 'required|min:3|max:30'
+        ],
+        [
+            'title.required' => 'Title is obbligatory',
+            'title.min' => 'Title must have at least 3 letters',
+            'title.max' => 'Title must have a maximum of 30 letters',
+        ]);
+
         $exists = Project::where('title', $request->title)->first();
         if($exists){
             return redirect()->route('admin.projects.index')->with('error', 'Project exist');
@@ -58,9 +81,9 @@ class ProjecstController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(Project $project)
     {
-        //
+        return view('admin.projects.edit', compact('project'));
     }
 
     /**

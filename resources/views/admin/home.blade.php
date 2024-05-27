@@ -2,9 +2,9 @@
 
 @section('content')
 
-<div class="container">
+<div class="home">
 
-    <h1>Home Admin</h1>
+    <h1 class="text-center mt-5 ">Home Admin</h1>
 </div>
 
 @endsection

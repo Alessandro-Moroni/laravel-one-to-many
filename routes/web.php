@@ -31,6 +31,9 @@ Route::middleware(['auth', 'verified'])
                     Route::resource('projects', ProjecstController::class);
                     Route::resource('technologies', TechnologiesController::class);
                     Route::resource('types', TypesController::class);
+
+                    // rotte custom
+                    Route::get('orderby/{direction}/{column}', [ProjecstController::class, 'orderby'])->name('orderby');
                 });
 
 Route::middleware('auth')->group(function () {

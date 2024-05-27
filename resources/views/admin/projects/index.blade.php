@@ -32,18 +32,23 @@
         @endif
 
         <div>
-            <form action="{{ route('admin.projects.store') }}" method="POST" class="d-flex my-3 ">
-                @csrf
-                <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" name="title">
-                <button class="btn btn-outline-success" type="submit">Add</button>
-            </form>
+            <div>
+                <form action="{{route('admin.projects.index')}}" method="GET" class="d-flex" role="search">
+                    <input class="form-control me-2" type="search" name="toSearch" placeholder="Search Project" aria-label="Search">
+                    <button class="btn btn-success" type="search">Search</button>
+                </form>
+            </div>
+
+            <a href="{{ route('admin.projects.create') }}" class="btn btn-primary my-3">
+                Create a new Project
+            </a>
 
         </div>
 
         <table class="table">
             <thead>
               <tr>
-                <th scope="col">Title</th>
+                <th scope="col"><a href="{{route('admin.orderby', ['direction'=> $direction, 'column' => 'title'])}}">Title</a></th>
                 <th scope="col">Type</th>
                 <th scope="col">Actions</th>
               </tr>
@@ -53,22 +58,18 @@
 
                 <tr>
                   <td>
-                    <form action="{{ route('admin.projects.update', $project) }}" method="POST" id="form-projects{{$project->id}}">
-                        @csrf
-                        @method('PUT')
-                        <input type="text" value="{{ $project->title }}" name="title">
-
-                    </form>
+                    {{ $project->title }}
                   </td>
 
                   <td>
-                    {{ $project->type->title }}
+                    {{ $project->type?->title }}
                   </td>
 
+
                   <td class="d-flex">
-                    <button type="button" class="btn btn-primary me-2 " onclick="submitForm({{$project->id}})">
+                    <a href="{{route('admin.projects.edit', $project->id)}}" class="btn btn-warning me-3">
                         <i class="fa-solid fa-pen"></i>
-                    </button>
+                    </a>
 
                     <form action="{{ route('admin.projects.destroy', $project) }}" method="POST" onsubmit="return confirm('Are you sure want to delete?')">
                         @csrf

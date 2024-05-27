@@ -23,6 +23,7 @@ class ProjectTableSeeder extends Seeder
             $new_item->title = $item;
             $new_item->slug = Help::generateSlug($item, Project::class);
 
+
             $new_item->save();
         }
     }
