@@ -63,7 +63,7 @@
                   </td>
 
                   <td>
-                    <img src="{{ asset('storage/'. $project->image) }}" alt="{{$project->image}}" width="100">
+                    <img src="{{ asset('storage/'. $project->image) }}" alt="{{$project->image}}" alt="{{$project->title}}" width="100">
                   </td>
 
                   <td>

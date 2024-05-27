@@ -58,9 +58,9 @@ class ProjecstController extends Controller
             'image.image' => 'Upload file must be an image'
         ]);
 
-
-        if($request->hasFile('image')){
-            $image_path = $request->file('image')->store('uploads', 'public');
+        $data = $request->all();
+        if(array_key_exists('image', $data)){
+            $image_path = Storage::put('uploads', $data['image']);
             $data['image'] = $image_path;
 
 
@@ -74,7 +74,7 @@ class ProjecstController extends Controller
             $new = new Project();
             $new->title = $request->title;
             $new->slug = Help::generateSlug($new->title, Project::class);
-            $new->image = $data['image']??null;
+            $new->image = $data['image'];
             $new->save();
 
             return redirect()->route('admin.projects.index')->with('success', 'Project added');
