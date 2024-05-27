@@ -49,6 +49,7 @@
             <thead>
               <tr>
                 <th scope="col"><a href="{{route('admin.orderby', ['direction'=> $direction, 'column' => 'title'])}}">Title</a></th>
+                <th scope="col">Image</th>
                 <th scope="col">Type</th>
                 <th scope="col">Actions</th>
               </tr>
@@ -62,8 +63,13 @@
                   </td>
 
                   <td>
+                    <img src="{{ asset('storage/'. $project->image) }}" alt="{{$project->image}}" width="100">
+                  </td>
+
+                  <td>
                     {{ $project->type?->title }}
                   </td>
+
 
 
                   <td class="d-flex">

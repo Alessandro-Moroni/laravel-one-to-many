@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Project;
 use Illuminate\Http\Request;
 use App\Functions\Helper as Help;
+use Illuminate\Support\Facades\Storage;
 
 
 class ProjecstController extends Controller
@@ -47,13 +48,23 @@ class ProjecstController extends Controller
     public function store(Request $request)
     {
         $exists = $request->validate([
-            'title' => 'required|min:3|max:30'
+            'title' => 'required|min:3|max:30',
+            'image' => 'sometimes|image'
         ],
         [
             'title.required' => 'Title is obbligatory',
             'title.min' => 'Title must have at least 3 letters',
             'title.max' => 'Title must have a maximum of 30 letters',
+            'image.image' => 'Upload file must be an image'
         ]);
+
+
+        if($request->hasFile('image')){
+            $image_path = $request->file('image')->store('uploads', 'public');
+            $data['image'] = $image_path;
+
+
+        }
 
         $exists = Project::where('title', $request->title)->first();
         if($exists){
@@ -63,6 +74,7 @@ class ProjecstController extends Controller
             $new = new Project();
             $new->title = $request->title;
             $new->slug = Help::generateSlug($new->title, Project::class);
+            $new->image = $data['image']??null;
             $new->save();
 
             return redirect()->route('admin.projects.index')->with('success', 'Project added');
@@ -92,12 +104,14 @@ class ProjecstController extends Controller
     public function update(Request $request, Project $project)
     {
         $data = $request->validate([
-            'title' => 'required|min:3|max:30'
+            'title' => 'required|min:3|max:30',
+            'image' => 'sometimes|image'
         ],
         [
             'title.required' => 'Title is obbligatory',
             'title.min' => 'Title must have at least 3 letters',
             'title.max' => 'Title must have a maximum of 30 letters',
+            'image.image' => 'Upload file must be an image'
         ]);
 
         $exists = Project::where('title', $request->title)->first();
